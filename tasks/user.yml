@@ -1,0 +1,18 @@
+---
+
+- name: Configuring blocksci group (without explicit ID)
+  when: "{{ blocksci_group_id is not defined }}"
+  group: name={{ blocksci_group }}
+
+- name: Configuring blocksci group (with explicit ID)
+  when: "{{ blocksci_group_id is defined }}"
+  group: name={{ blocksci_group }} gid={{ blocksci_group_id }}
+  
+- name: Configuring blocksci user (without explicit ID)
+  when: "{{ blocksci_user_id is not defined }}"
+  user: name={{ blocksci_user }} group={{ blocksci_group }} createhome=no
+
+- name: Configuring blocksci user (with explicit ID)
+  when: "{{ blocksci_user_id is defined }}"
+  user: name={{ blocksci_user }} group={{ blocksci_group }} createhome=no uid={{ blocksci_user_id }}
+

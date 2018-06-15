@@ -1,0 +1,47 @@
+---
+
+- name: Ensure repository for necessary packages is installed
+  apt_repository:
+    repo: 'ppa:ubuntu-toolchain-r/test'
+    state: present   
+  tags: [packages]
+
+- name: Ensure packages are installed 
+  apt:
+    name="{{item}}"
+    state=present
+    update_cache=yes
+  with_items: "{{ blocksci_packages }}"
+  tags: [packages]
+  
+- name: Ensure source code is checked out
+  tags: [git]
+  git:
+    accept_hostkey: yes
+    repo:     "{{ blocksci_git_repo }}"
+    version:  "{{ blocksci_branch }}"
+    dest:     "{{ blocksci_src_dir }}"
+    clone:    yes
+    update:   no
+  register: blocksci_git_repo_clone
+
+- name: Create release directory
+  file: state=directory path="{{ blocksci_src_dir }}/release" owner="root" group="root" mode=0755
+  when: "{{ blocksci_git_repo_clone.changed }}"
+
+- name: Ensure log directory exists
+  file: state=directory path="{{ blocksci_log_dir }}" owner="{{ blocksci_user }}" group="{{ blocksci_group }}" mode=0755
+  tags: [dirs]
+
+- name: Build and install
+  shell: "CC=gcc-7 CXX=g++-7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH={{ blocksci_install_prefix }} .. && make && make install"
+  args:
+    chdir: "{{ blocksci_src_dir }}/release"
+  tags: [make]  
+
+- name: Install blockscipy to system python
+  shell: "CC=gcc-7 CXX=g++-7 pip3 install -e blockscipy"
+  args:
+    chdir: "{{ blocksci_src_dir }}"
+  tags: [pip]
+
