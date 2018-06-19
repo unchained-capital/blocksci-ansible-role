@@ -29,18 +29,16 @@
   file: state=directory path="{{ blocksci_src_dir }}/release" owner="root" group="root" mode=0755
   when: "{{ blocksci_git_repo_clone.changed }}"
 
-- name: Ensure log directory exists
-  file: state=directory path="{{ blocksci_log_dir }}" owner="{{ blocksci_user }}" group="{{ blocksci_group }}" mode=0755
-  tags: [dirs]
-
 - name: Build and install
   shell: "CC=gcc-7 CXX=g++-7 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH={{ blocksci_install_prefix }} .. && make && make install"
+  when: "{{ blocksci_git_repo_clone.changed }}"
   args:
     chdir: "{{ blocksci_src_dir }}/release"
   tags: [make]  
-
+ 
 - name: Install blockscipy to system python
   shell: "CC=gcc-7 CXX=g++-7 pip3 install -e blockscipy"
+  when: "{{ blocksci_git_repo_clone.changed }}"
   args:
     chdir: "{{ blocksci_src_dir }}"
   tags: [pip]
