@@ -8,7 +8,7 @@ It is based on the original installation instructions in the Blocksci documentat
 Requirements
 ------------
 
-Requires Python 3 and Ubuntu 16.4
+Requires Python 3 and Ubuntu 16.04
 
 Example Playbook
 ----------------
