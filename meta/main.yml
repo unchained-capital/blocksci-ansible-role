@@ -1,10 +1,14 @@
 ---
 
-  galaxy_info:
-    author: Abdullah Yusuf && Nelson Morrow
-    company: Unchained Capital
-    platforms:
-    - name: Ubuntu
-    galaxy_tags:
-    - Blocksci
-    dependencies: []
+galaxy_info:
+  author: "Abdullah Yusuf && Nelson Morrow"
+  company: Unchained Capital
+  platforms:
+   - name: Ubuntu
+     versions:
+      - xenial
+  galaxy_tags:
+    - blocksci
+    - bitcoin
+    - cryptocurrencies
+dependencies: []
