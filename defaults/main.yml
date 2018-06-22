@@ -29,7 +29,6 @@ blocksci_packages:
   - python3-pip
 
 blocksci_src_dir:        /usr/local/src/blocksci
-blocksci_log_dir:        /var/log/blocksci
 blocksci_install_prefix: /usr/local
 
 blocksci_user: blocksci

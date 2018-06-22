@@ -26,4 +26,5 @@ Author Information
 ------------------
 
 Unchained Capital
-
+* Abdullah Yusuf (www.github.com/Ayusuf95) 
+* Nelson Todd (www.github.com/nelsontodd)
