@@ -3,6 +3,9 @@
 - include: user.yml
   tags: [blocksci, user]
 
+- include: cmake.yml
+  tags: [blocksci, cmake]
+
 - include: install.yml
   tags: [blocksci, install]
 

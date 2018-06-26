@@ -5,7 +5,8 @@ blocksci_branch:   master
 blocksci_release:  ~
 
 blocksci_packages:
-  - cmake
+  - gcc-7
+  - g++-7
   - libtool
   - autoconf
   - libboost-filesystem-dev
@@ -30,6 +31,9 @@ blocksci_packages:
 
 blocksci_src_dir:        /usr/local/src/blocksci
 blocksci_install_prefix: /usr/local
+
+cmake_src_dir:           /usr/local/src/cmake
+cmake_install_prefix:    /usr/local
 
 blocksci_user: blocksci
 blocksci_group: blocksci

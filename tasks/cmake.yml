@@ -1,0 +1,37 @@
+---
+
+- name: Ensure no cmake in bin 
+  tags: [stat]
+  stat: path="{{ cmake_install_prefix }}/bin/cmake"
+  register: no_cmake
+
+- name: Check cmake existance 
+  tags: [stat]
+  debug:
+    msg: "cmake exists in usr/local/bin, if it is below 3.8 blocksci install will (probably) fail"
+  when: no_cmake.stat.exists
+
+- name: Create cmake directory
+  file: path="{{ cmake_src_dir }}" state=directory owner=root group=root mode=0755 
+  when: no_cmake.stat.exists == false
+
+- name: Download cmake
+  get_url: url=https://cmake.org/files/v3.11/cmake-3.11.0.tar.gz dest="{{ cmake_src_dir }}/cmake-3.11.0.tar.gz"
+  when: no_cmake.stat.exists == false
+
+- name: Extract cmake tarball
+  unarchive: copy=no src="{{ cmake_src_dir }}/cmake-3.11.0.tar.gz" dest="{{ cmake_src_dir }}" creates="{{ cmake_src_dir }}/cmake-3.11.0"
+  when: no_cmake.stat.exists == false
+
+- name: Configure cmake installation directory
+  shell: "./configure --prefix={{ cmake_install_prefix }}"
+  args:
+    chdir: "{{ cmake_src_dir }}/cmake-3.11.0"
+  when: no_cmake.stat.exists == false
+
+- name: Compile & Install cmake
+  shell: "make && make install"
+  args:
+    chdir: "{{ cmake_src_dir }}/cmake-3.11.0"
+  when: no_cmake.stat.exists == false
+
